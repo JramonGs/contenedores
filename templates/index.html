@@ -2,82 +2,36 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Animales</title>
+    <title>Mi Zoológico</title>
+    <!-- Aquí puedes enlazar tu CSS después -->
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
 </head>
 <body>
-
-    <div class="container">
-        <header>
-            <h1>Animales del zoológico</h1>
-        </header>
-        
-        <div class="animal-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="3" class="table-title">
-                            Lista de Animales
-                        </th>
-
-                        <search>
-                            <input type="text" placeholder="Buscar animal...">
-                        </search>
-                    </tr>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Especie</th>
-                        <th>Edad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Melman</td>
-                        <td>Jirafa</td>
-                        <td>7</td>
-                    </tr>
-                    <tr>
-                        <td>Gloria</td>
-                        <td>Hipopótamo</td>
-                        <td>8</td>
-                    </tr>
-                    <tr>
-                        <td>Marty</td>
-                        <td>Cebra</td>
-                        <td>9</td>
-                    </tr>
-                    <tr>
-                        <td>Alex</td>
-                        <td>León</td>
-                        <td>10</td>
-                    </tr>
-                    <tr> 
-                        <td>Skipper</td>
-                        <td>Pingüino</td>
-                        <td>4</td>
-                    </tr>
-                    <tr> 
-                        <td>Cabo</td>
-                        <td>Pingüino</td>
-                        <td>4</td>
-                    </tr>
-                    <tr> 
-                        <td>Kowalski</td>
-                        <td>Pingüino</td>
-                        <td>4</td>
-                    </tr>
-                    <tr> 
-                        <td>Rico</td>
-                        <td>Pingüino</td>
-                        <td>4</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div>
-            <button>Agregar Animal</button>
-        </div>
-    </div>
+    <h1>Lista de Animales</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Edad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Ciclo para iterar sobre los registros -->
+            {% for animal in animales %}
+            <tr>
+                <td>{{ animal.id }}</td>
+                <td>{{ animal.nombre }}</td>
+                <td>{{ animal.tipo }}</td>
+                <td>{{ animal.edad }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">No hay animales registrados aún.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
