@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Mi Zoológico</title>
-    <!-- Aquí puedes enlazar tu CSS después -->
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
 </head>
 <body>
     <h1>Lista de Animales</h1>
+    {% if agregado %}
+        <p class="mensaje exito">Animal agregado correctamente.</p>
+    {% endif %}
+    <p><a class="button" href="{{ url_for('animales.agregar_animal') }}">Agregar animal</a></p>
     <table border="1">
         <thead>
             <tr>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar animal | Mi Zoológico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
+</head>
+<body>
+    <main class="container">
+        <h1>Agregar animal</h1>
+        {% if errores %}
+            <ul class="errores" role="alert">
+                {% for error in errores %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form action="{{ url_for('animales.agregar_animal') }}" method="post">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" maxlength="100" value="{{ valores.get('nombre', '') }}" required>
+
+            <label for="tipo">Tipo</label>
+            <input id="tipo" name="tipo" type="text" maxlength="100" value="{{ valores.get('tipo', '') }}" required>
+
+            <label for="edad">Edad</label>
+            <input id="edad" name="edad" type="number" min="0" value="{{ valores.get('edad', '') }}">
+
+            <button type="submit">Guardar animal</button>
+        </form>
+        <p><a href="{{ url_for('index') }}">Volver a la lista</a></p>
+    </main>
+</body>
+</html>
