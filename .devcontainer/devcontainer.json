@@ -1,4 +1,13 @@
 {
     "name": "zoo-container",
-    "image": "zoo"
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "context": ".."
+    },
+    "runArgs": [
+        "--network=zoo_network"
+    ],
+    "forwardPorts": [
+        5000
+    ]
 }

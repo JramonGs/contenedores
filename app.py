@@ -1,16 +1,36 @@
-from flask import Flask, render_template
+import os
+from urllib.parse import quote_plus
+
+from dotenv import load_dotenv
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+
+from animales.agregar import crear_blueprint
+
+load_dotenv()
 
 app = Flask(__name__)
 
-# 1. Primero las configuraciones
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:zoo_dev_op@host.docker.internal:3306/zoo_db'
+db_user = os.environ.get('DB_USER')
+db_password = os.environ.get('DB_PASSWORD')
+db_host = os.environ.get('DB_HOST')
+db_port = os.environ.get('DB_PORT', '3306')
+db_name = os.environ.get('DB_NAME')
+
+if not all((db_user, db_password, db_host, db_name)):
+    raise RuntimeError(
+        'Faltan variables de conexión: DB_USER, DB_PASSWORD, DB_HOST y DB_NAME.'
+    )
+
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f'mysql+pymysql://{quote_plus(db_user)}:{quote_plus(db_password)}'
+    f'@{db_host}:{db_port}/{quote_plus(db_name)}'
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# 2. Después inicializas la base de datos
 db = SQLAlchemy(app)
 
-# 3. Definimos el modelo de datos.
+
 class Animal(db.Model):
     __tablename__ = 'animales'
     id = db.Column(db.Integer, primary_key=True)
@@ -18,15 +38,25 @@ class Animal(db.Model):
     tipo = db.Column(db.String(100), nullable=False)
     edad = db.Column(db.Integer)
 
+
+app.register_blueprint(crear_blueprint(db, Animal))
+
+
+def inicializar_base_de_datos():
+    with app.app_context():
+        db.create_all()
+
+
 @app.route('/')
 def index():
-    
-    # Consultamos todos los animales de la base de datos
     lista_animales = Animal.query.all()
-    
-    # Renderizamos la plantilla index.html y pasamos la lista de animales.
-    return render_template('index.html', animales=lista_animales)
+    return render_template(
+        'index.html',
+        animales=lista_animales,
+        agregado=request.args.get('agregado') == '1',
+    )
+
 
 if __name__ == '__main__':
-    # Agregamos host='0.0.0.0' para que Flask sea accesible desde fuera del contenedor de desarrollo
+    inicializar_base_de_datos()
     app.run(host='0.0.0.0', port=5000)

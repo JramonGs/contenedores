@@ -67,3 +67,33 @@ button {
     cursor: pointer;
     border-radius: 4px; /* Bordes redondeados */
 }
+
+.button {
+    background-color: #4CAF50;
+    border-radius: 4px;
+    color: white;
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+input {
+    box-sizing: border-box;
+    font: inherit;
+    padding: 8px;
+    width: 100%;
+}
+
+.errores {
+    color: #a12622;
+}
+
+.mensaje.exito {
+    color: #247a36;
+}
